@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Transcription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('images/background-1.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 20;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #f7eeee;
+            margin-bottom: 80px;
+        }
+
+        #transcription {
+            font-size: 16px;
+            background-color: #e3d7d7;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+            color: #000000;
+        }
+
+        #voice {
+            color: #ff0000;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #277a29;
+            color: #f2ebeb;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3e9f43;
+        }
+
+        .copied {
+            font-size: 17px;
+            color: #ecf4ed;
+            margin-top: 10px;
+        }
+
+        footer {
+            font-size: 14px;
+            color: #ffffff;
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #333333;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100;
+
+        }
+
+        .footer-text {
+            display: block;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size: 40px;">Voice Transcription</h1>
+    <h2>
+        <p>
+            This is a voice transcription web application 
+            <p>
+                that uses the Web Speech API in JavaScript to transcribe speech to text. 
+            </p>
+                <b>
+                    Its a test stuff, Its not 100% accurate. Thanks for using it.
+                </b>
+                
+        </p>
+    </h2>
+    <div id="transcription"><span id="voice" style="color: #ff0000;"></span></div>
+    <button onclick="copyText()">Copy Text</button>
+    <p id="copiedMessage" class="copied"></p>
+
+    <footer>
+        Web App developed by Godspower Maurice &copy; 2023
+    </footer>
+
+    <script>
+        const recognition = new webkitSpeechRecognition() || SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        let transcription = '';
+
+        recognition.onresult = function (event) {
+            const result = event.results[event.results.length - 1];
+            const transcript = result[0].transcript;
+
+            if (result.isFinal) {
+                transcription += transcript + ' ';
+            } else {
+                transcription = transcription.trim() + ' ' + transcript;
+            }
+
+            const transcriptionElement = document.getElementById('transcription');
+            transcriptionElement.textContent = transcription;
+        };
+
+        recognition.start();
+
+        function copyText() {
+            const transcriptionElement = document.getElementById('transcription');
+            const text = transcriptionElement.textContent;
+
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const copiedMessage = document.getElementById('copiedMessage');
+            copiedMessage.textContent = 'Text copied to clipboard!';
+            setTimeout(function() {
+                copiedMessage.textContent = '';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
