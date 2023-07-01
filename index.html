@@ -6,7 +6,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('images/background-1.jpg');
+            background: url('images/background-1.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             margin: 20;
@@ -67,8 +67,7 @@
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100;
-
+            width: 100%;
         }
 
         .footer-text {
@@ -98,7 +97,7 @@
     <p id="copiedMessage" class="copied"></p>
 
     <footer>
-        Web App developed by Godspower Maurice &copy; 2023
+        <span class="footer-text">Web App developed by Godspower Maurice &copy; 2023</span>
     </footer>
 
     <script>
@@ -112,10 +111,8 @@
             const result = event.results[event.results.length - 1];
             const transcript = result[0].transcript;
 
-            if (result.isFinal) {
-                transcription += transcript + ' ';
-            } else {
-                transcription = transcription.trim() + ' ' + transcript;
+            if (result.isFinal && transcript !== '') {
+                transcription = transcript + ' ';
             }
 
             const transcriptionElement = document.getElementById('transcription');
